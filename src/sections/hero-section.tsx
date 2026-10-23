@@ -127,17 +127,12 @@ export function HeroSection() {
             </motion.div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 24 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="relative mx-auto w-full max-w-xl"
-          >
-            <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-sky-500/20 via-transparent to-violet-500/20 blur-3xl" />
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 p-5 shadow-glow backdrop-blur-2xl">
-              <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.09),transparent_30%,transparent_70%,rgba(255,255,255,0.05))]" />
+          <div className="relative mx-auto w-full max-w-xl">
+            <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-sky-500/10 via-transparent to-violet-500/10 blur-3xl" />
+            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 p-5 backdrop-blur-2xl">
+              <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.04),transparent_30%,transparent_70%,rgba(255,255,255,0.03))]" />
               <div className="relative grid gap-4">
-                <div className="rounded-[1.5rem] border border-white/10 bg-slate-950/50 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] sm:px-5">
+                <div className="rounded-[1.5rem] border border-white/10 bg-slate-950/50 px-4 py-3 sm:px-5">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.35em] text-slate-400 sm:text-xs">
                     Portfolio workspace
                   </p>
@@ -146,10 +141,10 @@ export function HeroSection() {
                   </p>
                 </div>
 
-                <div className="grid gap-3 sm:gap-4 md:grid-cols-[0.95fr_1.05fr]">
-                  <div className="min-w-0 rounded-[1.75rem] border border-white/10 bg-slate-950/70 p-4 shadow-[inset_0_1px_0_rgba(148,163,184,0.15)] sm:p-5">
+                <div className="grid gap-3 sm:gap-4">
+                  <div className="min-w-0 rounded-[1.75rem] border border-white/10 bg-slate-950/70 p-4 sm:p-5">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 to-violet-500 text-base font-semibold text-white shadow-[0_12px_30px_rgba(96,165,250,0.4)] sm:h-14 sm:w-14 sm:text-xl">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 to-violet-500 text-base font-semibold text-white sm:h-14 sm:w-14 sm:text-xl">
                         RR
                       </div>
                       <div className="min-w-0">
@@ -183,31 +178,10 @@ export function HeroSection() {
                       </div>
                     </div>
                   </div>
-
-                  <div className="relative overflow-hidden rounded-[1.8rem] border border-white/10 bg-slate-950/70 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] sm:p-5">
-                    <div className="relative mx-auto flex h-[220px] w-full max-w-[300px] items-center justify-center">
-                      <div className="absolute inset-x-7 top-2 h-24 rounded-[1.7rem] border border-slate-400/35 bg-[#101827]/90 shadow-[0_0_0_1px_rgba(148,163,184,0.08)]" />
-                      <div className="absolute inset-x-10 top-8 h-24 rounded-[1.7rem] border border-slate-400/35 bg-[#0f172a]/95 shadow-[0_20px_40px_rgba(15,23,42,0.8)]" />
-                      <div className="absolute inset-x-4 bottom-0 h-24 rounded-[1.6rem] border border-violet-400/20 bg-gradient-to-br from-[#0f172a] via-[#1e1b4b] to-[#09090f] shadow-[0_25px_55px_rgba(76,29,149,0.55)]" />
-                      <div className="absolute inset-x-8 bottom-8 h-[4.5rem] rounded-[1.4rem] border border-violet-400/35 bg-gradient-to-br from-violet-500/85 via-fuchsia-500/80 to-sky-400/70 opacity-90 shadow-[0_0_30px_rgba(168,85,247,0.75)]" />
-                      <div className="absolute inset-x-9 bottom-7 h-[4.5rem] rounded-[1.4rem] border border-slate-400/15 bg-slate-950/80" />
-                    </div>
-
-                    <div className="mt-2 grid grid-cols-3 gap-2 sm:gap-3">
-                      {['React', 'TypeScript', 'PostgreSQL'].map((item) => (
-                        <div
-                          key={item}
-                          className="rounded-2xl border border-white/10 bg-white/5 px-2 py-2 text-center text-[10px] font-medium text-slate-200 sm:px-3 sm:text-xs"
-                        >
-                          {item}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </Container>
     </section>
