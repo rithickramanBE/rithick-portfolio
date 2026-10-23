@@ -16,6 +16,14 @@ const certifications = [
     issuer: "Microsoft",
     date: "April 2024",
   },
+  {
+    name: "Node.js Advanced Concepts",
+    issuer: "Udemy",
+  },
+  {
+    name: "Generative AI Course",
+    issuer: "1000 Prompters",
+  },
 ];
 
 export function EducationSection() {
@@ -26,12 +34,12 @@ export function EducationSection() {
     >
       <Container>
         <SectionHeading
-          eyebrow="Education"
+          eyebrow="Education & Certifications"
           title="Foundations and certifications."
-          description="Computer science education and industry certifications relevant to my software development work."
+          description="A computer science foundation, supported by certifications in backend development, data, and generative AI."
         />
 
-        <div className="mt-7 grid gap-4 sm:mt-10 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="mt-7 grid gap-4 sm:mt-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -66,7 +74,11 @@ export function EducationSection() {
             </Card>
           </motion.div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+          <div>
+            <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-slate-400 sm:mb-4">
+              Certifications
+            </h3>
+            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             {certifications.map((certification, index) => (
               <motion.div
                 key={certification.name}
@@ -75,7 +87,7 @@ export function EducationSection() {
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.5, delay: index * 0.08 }}
               >
-                <Card className="flex h-full items-start gap-4 border-white/10 bg-white/5 p-5">
+                <Card className="flex h-full items-start gap-3 border-white/10 bg-white/5 p-4 sm:p-5">
                   <div className="rounded-2xl border border-violet-300/20 bg-violet-500/10 p-3 text-violet-200">
                     <Award className="h-5 w-5" />
                   </div>
@@ -86,13 +98,16 @@ export function EducationSection() {
                     <p className="mt-2 text-sm text-slate-300">
                       {certification.issuer}
                     </p>
-                    <p className="mt-1 text-xs text-slate-500">
-                      {certification.date}
-                    </p>
+                    {certification.date ? (
+                      <p className="mt-1 text-xs text-slate-500">
+                        {certification.date}
+                      </p>
+                    ) : null}
                   </div>
                 </Card>
               </motion.div>
             ))}
+            </div>
           </div>
         </div>
       </Container>
