@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { MotionConfig } from "framer-motion";
 
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
@@ -10,6 +11,8 @@ import App from "./App";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <MotionConfig reducedMotion="user">
+      <App />
+    </MotionConfig>
   </StrictMode>,
 );

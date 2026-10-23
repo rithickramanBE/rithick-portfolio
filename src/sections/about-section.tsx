@@ -17,7 +17,7 @@ const fadeUp = {
 
 export function AboutSection() {
   return (
-    <section id="about" className="scroll-mt-24 py-24 sm:py-28">
+    <section id="about" className="scroll-mt-24 py-16 sm:py-20 lg:py-28">
       <Container>
         <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:gap-10">
           <motion.div
@@ -32,8 +32,8 @@ export function AboutSection() {
               description="I have 3+ years of experience owning features end to end, from database and API design to polished, responsive interfaces. My work spans React, Node.js, PostgreSQL, real-time systems, and AI-assisted document automation."
             />
 
-            <Card className="mt-8 border-white/10 bg-white/5 p-0 overflow-hidden">
-              <div className="border-b border-white/10 bg-gradient-to-r from-sky-500/10 via-white/5 to-violet-500/10 px-6 py-5">
+            <Card className="mt-6 overflow-hidden border-white/10 bg-white/5 p-0 sm:mt-8">
+              <div className="border-b border-white/10 bg-gradient-to-r from-sky-500/10 via-white/5 to-violet-500/10 px-5 py-4 sm:px-6 sm:py-5">
                 <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
                   Profile snapshot
                 </p>
@@ -41,7 +41,7 @@ export function AboutSection() {
                   End-to-end engineering for production applications
                 </p>
               </div>
-              <div className="grid gap-4 p-6 sm:grid-cols-2">
+              <div className="grid gap-3 p-4 sm:gap-4 sm:p-6 sm:grid-cols-2">
                 {[
                   {
                     icon: Code2,

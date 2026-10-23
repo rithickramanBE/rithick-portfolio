@@ -9,6 +9,7 @@ const sectionIds = [
   "about",
   "skills",
   "experience",
+  "education",
   "projects",
   "tech-stack",
   "contact",

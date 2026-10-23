@@ -30,10 +30,10 @@ export function SectionHeading({
       <p className="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-sky-300/90">
         {eyebrow}
       </p>
-      <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+      <h2 className="text-[clamp(1.75rem,6vw,2.5rem)] font-semibold leading-tight tracking-tight text-white">
         {title}
       </h2>
-      <p className="mt-4 text-sm leading-7 text-slate-300 sm:text-base">
+      <p className="mt-3 text-sm leading-7 text-slate-300 sm:mt-4 sm:text-base">
         {description}
       </p>
       {children}

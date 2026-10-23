@@ -20,31 +20,31 @@ export function HeroSection() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden pt-32 sm:pt-36 lg:min-h-screen lg:pt-28"
+      className="relative overflow-hidden pt-28 sm:pt-32 lg:min-h-screen lg:pt-28"
     >
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.2),transparent_28%),radial-gradient(circle_at_top_right,rgba(139,92,246,0.16),transparent_26%),linear-gradient(180deg,rgba(11,15,25,0.65),rgba(11,15,25,1))]" />
       <Container>
-        <div className="grid items-center gap-14 lg:min-h-[calc(100vh-7rem)] lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+        <div className="grid items-center gap-10 sm:gap-14 lg:min-h-[calc(100vh-7rem)] lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
           <motion.div
             initial="hidden"
             animate="visible"
-            className="max-w-3xl space-y-8"
+            className="max-w-3xl space-y-6 sm:space-y-8"
           >
             <motion.div
               variants={fadeUp}
               custom={0}
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 backdrop-blur-xl"
+              className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs leading-5 text-slate-200 backdrop-blur-xl sm:px-4 sm:text-sm"
             >
               <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(52,211,153,0.8)]" />
               Software Developer (Full Stack) at Adeptview
             </motion.div>
 
             <motion.div variants={fadeUp} custom={0.1}>
-              <h1 className="max-w-4xl text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
+              <h1 className="max-w-4xl text-[clamp(2.35rem,9vw,3.5rem)] font-semibold leading-[1.08] tracking-tight text-white sm:text-6xl lg:text-7xl">
                 <span className="bg-gradient-to-r from-white via-sky-100 to-violet-200 bg-clip-text text-transparent">
                   Rithick Raman
                 </span>
-                <span className="mt-4 block bg-gradient-to-r from-sky-400 via-white to-violet-400 bg-clip-text text-transparent">
+                <span className="mt-2 block bg-gradient-to-r from-sky-400 via-white to-violet-400 bg-clip-text text-transparent sm:mt-4">
                   Full Stack Developer
                 </span>
               </h1>
@@ -71,7 +71,7 @@ export function HeroSection() {
             <motion.div
               variants={fadeUp}
               custom={0.4}
-              className="flex flex-col gap-4 sm:flex-row"
+              className="flex flex-col gap-3 sm:flex-row sm:gap-4"
             >
               <Button asChild variant="glow" size="lg">
                 <a href="#projects">
@@ -109,17 +109,19 @@ export function HeroSection() {
             <motion.div
               variants={fadeUp}
               custom={0.6}
-              className="grid gap-3 sm:grid-cols-3"
+              className="grid grid-cols-3 gap-2 sm:gap-3"
             >
               {heroStats.map((item) => (
                 <div
                   key={item.label}
-                  className="rounded-3xl border border-white/10 bg-white/5 p-4 backdrop-blur-xl"
+                  className="min-w-0 rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-xl sm:rounded-3xl sm:p-4"
                 >
-                  <p className="text-2xl font-semibold text-white">
+                  <p className="text-xl font-semibold text-white sm:text-2xl">
                     {item.value}
                   </p>
-                  <p className="mt-2 text-sm text-slate-400">{item.label}</p>
+                  <p className="mt-1 text-xs leading-5 text-slate-400 sm:mt-2 sm:text-sm">
+                    {item.label}
+                  </p>
                 </div>
               ))}
             </motion.div>
@@ -146,13 +148,13 @@ export function HeroSection() {
                   </div>
                 </div>
 
-                <div className="grid gap-4 md:grid-cols-[0.92fr_1.08fr]">
-                  <div className="rounded-[1.75rem] border border-white/10 bg-slate-950/65 p-4">
+                <div className="grid gap-3 sm:gap-4 md:grid-cols-[0.92fr_1.08fr]">
+                  <div className="min-w-0 rounded-[1.75rem] border border-white/10 bg-slate-950/65 p-4">
                     <div className="flex items-center gap-3">
                       <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 to-violet-500 text-xl font-semibold text-white shadow-glow">
                         RR
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <p className="text-sm font-semibold text-white">
                           Rithick Raman
                         </p>
@@ -164,7 +166,9 @@ export function HeroSection() {
                     <div className="mt-5 space-y-3 text-sm text-slate-300">
                       <div className="flex items-center gap-2">
                         <FaGithub className="h-4 w-4 text-slate-400" />
-                        github.com/rithickramanBE
+                        <span className="min-w-0 break-all">
+                          github.com/rithickramanBE
+                        </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <FaLinkedinIn className="h-4 w-4 text-slate-400" />

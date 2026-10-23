@@ -17,7 +17,7 @@ const fadeUp = {
 
 export function ExperienceSection() {
   return (
-    <section id="experience" className="scroll-mt-24 py-24 sm:py-28">
+    <section id="experience" className="scroll-mt-24 py-16 sm:py-20 lg:py-28">
       <Container>
         <SectionHeading
           eyebrow="Experience"
@@ -25,14 +25,14 @@ export function ExperienceSection() {
           description="Progressed from Junior Software Developer to Software Developer (Full Stack), contributing to production applications in Chennai."
         />
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:gap-10">
+        <div className="mt-7 grid gap-5 sm:mt-10 sm:gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:gap-10">
           <motion.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
           >
-            <Card className="h-full border-white/10 bg-white/5 p-6">
+            <Card className="h-full border-white/10 bg-white/5 p-5 sm:p-6">
               <div className="flex items-center gap-3">
                 <div className="rounded-2xl border border-sky-300/20 bg-sky-500/10 p-3 text-sky-300">
                   <BriefcaseBusiness className="h-5 w-5" />
@@ -41,13 +41,13 @@ export function ExperienceSection() {
                   <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
                     Adeptview · Chennai
                   </p>
-                  <p className="mt-1 text-2xl font-semibold text-white">
+                  <p className="mt-1 text-xl font-semibold text-white sm:text-2xl">
                     Software Developer (Full Stack)
                   </p>
                 </div>
               </div>
               <p className="mt-5 text-base font-medium text-slate-200">
-                August 2023 - Present
+                {experience[0].period}
               </p>
               <p className="mt-3 text-sm leading-7 text-slate-300">
                 {experience[0].summary}
@@ -89,18 +89,18 @@ export function ExperienceSection() {
                 {experience.map((item) => (
                   <Card
                     key={item.role}
-                    className="border-white/10 bg-white/5 p-6"
+                    className="border-white/10 bg-white/5 p-5 sm:p-6"
                   >
                     <div className="flex flex-wrap items-start justify-between gap-4">
                       <div>
                         <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
                           {item.company}
                         </p>
-                        <h3 className="mt-2 text-2xl font-semibold text-white">
+                        <h3 className="mt-2 text-xl font-semibold text-white sm:text-2xl">
                           {item.role}
                         </h3>
                       </div>
-                      <p className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200">
+                      <p className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-slate-200 sm:px-4 sm:text-sm">
                         {item.period}
                       </p>
                     </div>

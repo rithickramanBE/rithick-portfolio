@@ -29,12 +29,30 @@ export function Navbar({ activeSection }: NavbarProps) {
     };
   }, [isOpen]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsOpen(false);
+    };
+    const closeOnDesktopResize = () => {
+      if (window.innerWidth >= 1280) setIsOpen(false);
+    };
+
+    window.addEventListener("keydown", closeOnEscape);
+    window.addEventListener("resize", closeOnDesktopResize);
+    return () => {
+      window.removeEventListener("keydown", closeOnEscape);
+      window.removeEventListener("resize", closeOnDesktopResize);
+    };
+  }, [isOpen]);
+
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <Container className="py-4">
         <div
           className={cn(
-            "flex items-center justify-between rounded-full border px-4 py-3 backdrop-blur-2xl transition-all duration-300 md:px-6",
+            "flex items-center justify-between rounded-full border px-3 py-2.5 backdrop-blur-2xl transition-all duration-300 sm:px-4 sm:py-3 lg:px-6",
             isScrolled
               ? "border-white/10 bg-slate-950/85 shadow-soft"
               : "border-white/5 bg-slate-950/55",
@@ -50,7 +68,7 @@ export function Navbar({ activeSection }: NavbarProps) {
             </div>
           </a>
 
-          <nav className="hidden items-center gap-1 rounded-full border border-white/8 bg-white/5 p-1 md:flex">
+          <nav className="hidden items-center gap-1 rounded-full border border-white/8 bg-white/5 p-1 xl:flex">
             {navItems.map((item) => {
               const isActive = activeSection === item.href.replace("#", "");
 
@@ -77,7 +95,7 @@ export function Navbar({ activeSection }: NavbarProps) {
               asChild
               variant="outline"
               size="sm"
-              className="hidden md:inline-flex"
+              className="hidden xl:inline-flex"
             >
               <a href="#contact">Let&apos;s talk</a>
             </Button>
@@ -87,8 +105,8 @@ export function Navbar({ activeSection }: NavbarProps) {
                 isOpen ? "Close navigation menu" : "Open navigation menu"
               }
               aria-expanded={isOpen}
-              aria-controls="mobile-navigation"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-white/20 hover:bg-white/10 md:hidden"
+              aria-controls={isOpen ? "mobile-navigation" : undefined}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-white/20 hover:bg-white/10 xl:hidden"
               onClick={() => setIsOpen((value) => !value)}
             >
               {isOpen ? (
@@ -108,10 +126,11 @@ export function Navbar({ activeSection }: NavbarProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.22 }}
-            className="md:hidden"
+            className="xl:hidden"
           >
             <Container>
-              <div
+              <nav
+                aria-label="Mobile navigation"
                 id="mobile-navigation"
                 className="mt-2 overflow-hidden rounded-3xl border border-white/10 bg-slate-950/95 p-4 shadow-soft backdrop-blur-2xl"
               >
@@ -136,8 +155,8 @@ export function Navbar({ activeSection }: NavbarProps) {
                       </a>
                     );
                   })}
-                </div>
               </div>
+              </nav>
             </Container>
           </motion.div>
         ) : null}

@@ -17,7 +17,7 @@ const fadeUp = {
 
 export function ProjectsSection() {
   return (
-    <section id="projects" className="scroll-mt-24 py-24 sm:py-28">
+    <section id="projects" className="scroll-mt-24 py-16 sm:py-20 lg:py-28">
       <Container>
         <SectionHeading
           eyebrow="Projects"
@@ -25,7 +25,7 @@ export function ProjectsSection() {
           description="Selected company projects summarized by their scope, stack, and engineering contributions."
         />
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-2">
+        <div className="mt-7 grid gap-4 sm:mt-10 sm:gap-6 lg:grid-cols-2">
           {projects.map((project, index) => (
             <motion.article
               key={project.title}
@@ -36,27 +36,27 @@ export function ProjectsSection() {
               transition={{ delay: index * 0.08 }}
               className="group"
             >
-              <Card className="flex h-full flex-col overflow-hidden border-white/10 bg-white/5 p-4 transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/7">
+              <Card className="flex h-full flex-col overflow-hidden border-white/10 bg-white/5 p-3 transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/7 sm:p-4">
                 <ProjectPreview
                   type={project.previewType}
                   accent={project.accent}
                 />
 
-                <div className="flex flex-1 flex-col p-2 pt-5">
+                <div className="flex min-w-0 flex-1 flex-col p-2 pt-4 sm:pt-5">
                   <div className="flex items-center justify-between gap-3">
                     <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
                       Case study
                     </p>
                     <span className="h-2.5 w-2.5 rounded-full bg-sky-400 shadow-[0_0_18px_rgba(59,130,246,0.85)]" />
                   </div>
-                  <h3 className="mt-3 text-2xl font-semibold tracking-tight text-white">
+                  <h3 className="mt-3 break-words text-xl font-semibold tracking-tight text-white sm:text-2xl">
                     {project.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-7 text-slate-300">
+                  <p className="mt-3 text-sm leading-6 text-slate-300 sm:leading-7">
                     {project.description}
                   </p>
 
-                  <div className="mt-5 flex flex-wrap gap-2">
+                  <div className="mt-4 flex flex-wrap gap-2 sm:mt-5">
                     {project.tech.map((item) => (
                       <span
                         key={item}
@@ -67,18 +67,17 @@ export function ProjectsSection() {
                     ))}
                   </div>
 
-                  <div className="mt-5 space-y-2">
+                  <div className="mt-4 space-y-2 sm:mt-5">
                     {project.highlights.map((item) => (
                       <div
                         key={item}
-                        className="flex items-center gap-3 text-sm text-slate-300"
+                        className="flex items-start gap-3 text-sm leading-6 text-slate-300"
                       >
-                        <span className="h-1.5 w-1.5 rounded-full bg-sky-300" />
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-300" />
                         {item}
                       </div>
                     ))}
                   </div>
-
                 </div>
               </Card>
             </motion.article>

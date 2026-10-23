@@ -16,7 +16,7 @@ const fadeUp = {
 
 export function TechStackSection() {
   return (
-    <section id="tech-stack" className="scroll-mt-24 py-24 sm:py-28">
+    <section id="tech-stack" className="scroll-mt-24 py-16 sm:py-20 lg:py-28">
       <Container>
         <SectionHeading
           eyebrow="Tech Stack"
@@ -24,29 +24,31 @@ export function TechStackSection() {
           description="A selection of the frameworks, services, and infrastructure I have used to build and support full-stack applications."
         />
 
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="mt-10 overflow-hidden rounded-[32px] border border-white/10 bg-white/5 p-4 backdrop-blur-xl"
-        >
-          <div className="flex w-[200%] animate-marquee gap-4">
-            {[...techStack, ...techStack].map((item, index) => (
+        <div className="mt-7 grid grid-cols-2 gap-3 sm:mt-10 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+          {techStack.map((item, index) => (
+            <motion.div
+              key={item.name}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ delay: index * 0.04 }}
+            >
               <div
-                key={`${item.name}-${index}`}
-                className="flex min-w-[180px] items-center gap-3 rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-white transition duration-300 hover:border-sky-300/25 hover:bg-sky-500/10"
+                className="flex h-full min-w-0 items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-white transition duration-300 hover:border-sky-300/25 hover:bg-sky-500/10 sm:px-4"
               >
                 <div className="rounded-2xl border border-white/10 bg-white/5 p-2 text-sky-300">
                   <item.icon className="h-4 w-4" />
                 </div>
-                <span className="text-sm font-medium">{item.name}</span>
+                <span className="min-w-0 break-words text-xs font-medium sm:text-sm">
+                  {item.name}
+                </span>
               </div>
-            ))}
-          </div>
-        </motion.div>
+            </motion.div>
+          ))}
+        </div>
 
-        <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-4 grid gap-3 sm:mt-6 sm:gap-4 md:grid-cols-2 xl:grid-cols-4">
           {techHighlights.map((item, index) => (
             <motion.div
               key={item.title}
