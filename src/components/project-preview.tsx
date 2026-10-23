@@ -24,9 +24,14 @@ const previewContent: Record<
     steps: ["Contract authoring", "Version history and audit trail", "Approvals"],
   },
   mobile: {
-    label: "Mobile application",
-    title: "Translation bot",
-    steps: ["React Native", "CTC", "VTT"],
+    label: "Multilingual mobile chatbot",
+    title: "Translation and voice chat",
+    steps: [
+      "Text-to-text translation",
+      "Audio-to-audio translation",
+      "Listen in your preferred language",
+      "Firebase auth and saved chat history",
+    ],
   },
 };
 

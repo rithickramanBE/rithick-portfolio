@@ -92,6 +92,8 @@ export const skillGroups: SkillGroup[] = [
     items: [
       "React.js",
       "React Native",
+      "Firebase Auth",
+      "Firebase (chat storage)",
       "TypeScript",
       "JavaScript",
       "Redux",
@@ -249,14 +251,14 @@ export const projects: ProjectItem[] = [
     previewType: "workflow",
   },
   {
-    title: "Translation Bot",
+    title: "Multilingual Translation Chatbot",
     description:
-      "A mobile translation bot built with React Native, using CTC and VTT.",
-    tech: ["React Native", "CTC", "VTT"],
+      "A React Native chatbot that supports text-to-text and audio-to-audio translation, letting users listen to responses in their preferred language. Firebase handles authentication and chat history storage.",
+    tech: ["React Native", "Firebase Auth", "Firebase (chat storage)"],
     highlights: [
-      "Mobile application built with React Native",
-      "Translation bot",
-      "CTC and VTT",
+      "Text-to-text translation",
+      "Audio-to-audio translation with translated audio playback",
+      "Firebase authentication and saved chat history",
     ],
     accent: "from-amber-500/20 via-amber-500/5 to-orange-500/10",
     previewType: "mobile",
@@ -265,6 +267,7 @@ export const projects: ProjectItem[] = [
 
 export const techStack: TechItem[] = [
   { name: "React.js / React Native", icon: Code2 },
+  { name: "Firebase", icon: Zap },
   { name: "TypeScript", icon: FileBadge2 },
   { name: "Node.js / Express.js", icon: Database },
   { name: "PostgreSQL / Prisma", icon: Layers3 },
