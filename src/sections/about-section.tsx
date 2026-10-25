@@ -1,116 +1,107 @@
-import { motion } from "framer-motion";
-import { Award, Code2, Layers3, Sparkles } from "lucide-react";
+import { Award, BookOpen, GraduationCap, Lightbulb, MapPin, Zap } from "lucide-react";
 
 import { Container } from "@/components/container";
-import { Card } from "@/components/ui/card";
 import { SectionHeading } from "@/components/section-heading";
-import { aboutStats } from "@/data/portfolio";
+import { Card } from "@/components/ui/card";
+import {
+  certifications,
+  education,
+  portfolioConfig,
+} from "@/data/portfolio";
+import { useReveal } from "@/hooks/use-reveal";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 26 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] as const },
-  },
-};
+const aboutParagraphs = [
+  "I’m Rithick, a full-stack developer based in Tamil Nadu. I work mostly with React, TypeScript, Node.js, and PostgreSQL.",
+  "I graduated in Computer Science from Bannari Amman Institute of Technology in 2023 and joined Adeptview as a junior developer. A year later I moved up to software developer, where I design APIs, make architecture decisions, and review interns’ code.",
+  "I like building things that stay fast and reliable in production. Lately I’ve been working on invoice automation with OCR and local LLMs using Ollama.",
+  "Outside work, I read about distributed systems and experiment with local AI models.",
+];
+
+const currentlyItems = [
+  { icon: Zap, text: "Working on — invoice automation with OCR, local LLM field extraction, and BullMQ workflows at Adeptview." },
+  { icon: BookOpen, text: "Learning — distributed systems patterns, Redis cluster configuration, and Kubernetes basics." },
+  { icon: Lightbulb, text: "Open to — full-stack or backend-leaning roles at product companies or startups. Remote-first preferred." },
+];
 
 export function AboutSection() {
-  return (
-    <section id="about" className="scroll-mt-24 py-16 sm:py-20 lg:py-28">
-      <Container>
-        <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:gap-10">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            <SectionHeading
-              eyebrow="About"
-              title="Full Stack Developer focused on reliable product delivery."
-              description="I have 3+ years of experience owning features end to end, from database and API design to polished, responsive interfaces. My work spans React, Node.js, PostgreSQL, real-time systems, and AI-assisted document automation."
-            />
+  const ref = useReveal<HTMLElement>();
 
-            <Card className="mt-6 overflow-hidden border-white/10 bg-white/5 p-0 sm:mt-8">
-              <div className="border-b border-white/10 bg-gradient-to-r from-sky-500/10 via-white/5 to-violet-500/10 px-5 py-4 sm:px-6 sm:py-5">
-                <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
-                  Profile snapshot
-                </p>
-                <p className="mt-2 text-xl font-semibold text-white">
-                  End-to-end engineering for production applications
-                </p>
-              </div>
-              <div className="grid gap-3 p-4 sm:gap-4 sm:p-6 sm:grid-cols-2">
-                {[
-                  {
-                    icon: Code2,
-                    label: "Full-stack ownership",
-                    text: "From database schemas and APIs to responsive interfaces",
-                  },
-                  {
-                    icon: Layers3,
-                    label: "Performance",
-                    text: "Measured improvements to APIs and data-heavy dashboards",
-                  },
-                  {
-                    icon: Sparkles,
-                    label: "Automation",
-                    text: "OCR and locally hosted LLMs for document workflows",
-                  },
-                  {
-                    icon: Award,
-                    label: "Security & delivery",
-                    text: "JWT, RBAC, Docker, and automated CI/CD pipelines",
-                  },
-                ].map(({ icon: Icon, label, text }) => (
-                  <div
-                    key={label}
-                    className="rounded-2xl border border-white/10 bg-slate-950/60 p-4"
-                  >
-                    <Icon className="h-5 w-5 text-sky-300" />
-                    <p className="mt-3 text-sm font-semibold text-white">
-                      {label}
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-slate-300">
-                      {text}
-                    </p>
-                  </div>
+  return (
+    <section
+      id="about"
+      ref={ref}
+      aria-labelledby="about-heading"
+      className="reveal section-space scroll-mt-24"
+    >
+      <Container>
+        <SectionHeading
+          id="about-heading"
+          eyebrow={portfolioConfig.sections.about.eyebrow}
+          title={portfolioConfig.sections.about.title}
+        />
+
+        <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:gap-12">
+          {/* Left: Narrative */}
+          <div className="space-y-4">
+            {aboutParagraphs.map((para, i) => (
+              <p key={i} className="text-sm leading-7 text-slate-200 sm:text-base">
+                {para}
+              </p>
+            ))}
+
+            {/* Currently block */}
+            <div className="mt-6 rounded-2xl border border-accent/15 bg-accent/[0.04] p-5">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">Currently</p>
+              <ul className="space-y-3">
+                {currentlyItems.map(({ icon: Icon, text }) => (
+                  <li key={text} className="flex items-start gap-3 text-sm leading-6 text-slate-200">
+                    <Icon aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                    <span>{text}</span>
+                  </li>
                 ))}
+              </ul>
+            </div>
+
+            {/* Location badge */}
+            <div className="flex items-center gap-2 text-sm text-slate-400">
+              <MapPin aria-hidden="true" className="h-4 w-4 text-accent" />
+              <span>{portfolioConfig.location} · {portfolioConfig.workPreference}</span>
+            </div>
+          </div>
+
+          {/* Right: Education + Certifications */}
+          <div className="grid gap-4 self-start">
+            <Card className="border-white/10 bg-white/[0.04] p-5 sm:p-6">
+              <h3 className="mb-4 flex items-center gap-2 text-base font-semibold text-white">
+                <GraduationCap aria-hidden="true" className="h-5 w-5 text-accent" />
+                {portfolioConfig.sections.education.title}
+              </h3>
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-accent">{education.degree}</p>
+                <h4 className="mt-1 text-base font-semibold text-white">{education.field}</h4>
+                <p className="mt-1 text-sm text-slate-300">{education.institution}</p>
+                <p className="mt-1.5 text-xs text-slate-400">
+                  {education.period} <span aria-hidden="true">·</span> {education.grade}
+                </p>
               </div>
             </Card>
-          </motion.div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            {aboutStats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ delay: index * 0.08 }}
-              >
-                <Card className="group h-full border-white/10 bg-white/5 p-5 transition duration-300 hover:-translate-y-1 hover:border-white/15 hover:bg-white/7">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <p className="text-4xl font-semibold tracking-tight text-white">
-                        {stat.value}
-                      </p>
-                      <p className="mt-2 text-sm font-medium text-slate-200">
-                        {stat.label}
-                      </p>
+            <Card className="border-white/10 bg-white/[0.04] p-5 sm:p-6">
+              <h3 className="mb-4 flex items-center gap-2 text-base font-semibold text-white">
+                <Award aria-hidden="true" className="h-5 w-5 text-accent" />
+                {portfolioConfig.sections.education.certificationHeading}
+              </h3>
+              <ul className="divide-y divide-white/8">
+                {certifications.map((cert) => (
+                  <li key={cert.name} className="py-3 first:pt-0 last:pb-0">
+                    <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+                      <p className="text-sm font-medium text-white">{cert.name}</p>
+                      <p className="shrink-0 text-xs text-slate-400">{cert.date}</p>
                     </div>
-                    <div className="rounded-2xl border border-white/10 bg-white/5 p-3 text-sky-300 transition group-hover:border-sky-300/20 group-hover:bg-sky-500/10">
-                      <stat.icon className="h-5 w-5" />
-                    </div>
-                  </div>
-                  <p className="mt-4 text-sm leading-6 text-slate-300">
-                    {stat.description}
-                  </p>
-                </Card>
-              </motion.div>
-            ))}
+                  </li>
+                ))}
+              </ul>
+            </Card>
           </div>
         </div>
       </Container>

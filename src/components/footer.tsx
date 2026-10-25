@@ -1,38 +1,61 @@
+import { ArrowUpRight } from "lucide-react";
+import { FaGithub, FaLinkedinIn } from "react-icons/fa6";
+
 import { Container } from "@/components/container";
-import { socialLinks } from "@/data/portfolio";
+import { portfolioConfig } from "@/data/portfolio";
 
 export function Footer() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="border-t border-white/8 bg-slate-950/70 py-8 backdrop-blur-xl">
+    <footer className="border-t border-white/8 bg-slate-950/80 py-8">
       <Container>
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          {/* Left: name + tagline */}
           <div>
-            <p className="text-lg font-semibold text-white">Rithick Raman</p>
-            <p className="mt-2 max-w-md text-sm text-slate-400">
-              Full Stack Developer building production applications with React,
-              Node.js, and PostgreSQL.
+            <p className="text-sm font-semibold text-white">{portfolioConfig.name}</p>
+            <p className="mt-0.5 text-xs text-slate-500">
+              {portfolioConfig.footerDescription}
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
-            {socialLinks.map(({ href, icon: Icon, label }) => (
-              <a
-                key={label}
-                href={href}
-                aria-label={label}
-                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300 transition duration-300 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/10 hover:text-white"
-                target={href.startsWith("http") ? "_blank" : undefined}
-                rel={href.startsWith("http") ? "noreferrer" : undefined}
-              >
-                <Icon className="h-4 w-4" />
-              </a>
-            ))}
+          {/* Right: social links */}
+          <div className="flex flex-wrap items-center gap-3">
+            <a
+              href={portfolioConfig.socialLinks.github}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="GitHub"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-slate-400 transition-all hover:border-accent/30 hover:text-accent"
+            >
+              <FaGithub aria-hidden="true" className="h-3.5 w-3.5" />
+            </a>
+            <a
+              href={portfolioConfig.socialLinks.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="LinkedIn"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 text-slate-400 transition-all hover:border-accent/30 hover:text-accent"
+            >
+              <FaLinkedinIn aria-hidden="true" className="h-3.5 w-3.5" />
+            </a>
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col gap-3 border-t border-white/8 pt-6 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 Rithick Raman. All rights reserved.</p>
-          <p>Nilgiris, Tamil Nadu, India</p>
+        <div className="mt-6 flex flex-col gap-2 border-t border-white/8 pt-5 text-xs text-slate-600 sm:flex-row sm:items-center sm:justify-between">
+          <p>© {year} {portfolioConfig.name}. All rights reserved.</p>
+          <p className="flex items-center gap-1.5">
+            <span>Built with React + Vite + Tailwind</span>
+            <span aria-hidden="true">·</span>
+            <a
+              href={portfolioConfig.socialLinks.github}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-0.5 text-slate-500 hover:text-slate-300 transition-colors"
+            >
+              Source <ArrowUpRight aria-hidden="true" className="h-3 w-3" />
+            </a>
+          </p>
         </div>
       </Container>
     </footer>

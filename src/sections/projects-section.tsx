@@ -1,88 +1,168 @@
-import { motion } from "framer-motion";
+import { ArrowRight, ExternalLink } from "lucide-react";
+import { useState } from "react";
 
 import { Container } from "@/components/container";
-import { ProjectPreview } from "@/components/project-preview";
 import { SectionHeading } from "@/components/section-heading";
 import { Card } from "@/components/ui/card";
-import { projects } from "@/data/portfolio";
+import { portfolioConfig, projects } from "@/data/portfolio";
+import { useReveal } from "@/hooks/use-reveal";
+import type { ProjectCategory } from "@/types/portfolio";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] as const },
-  },
+type FilterTab = "All" | ProjectCategory;
+const tabs: FilterTab[] = ["All", "Full-Stack", "Backend", "Real-time", "AI/Python"];
+
+const categoryColors: Record<ProjectCategory, string> = {
+  "Full-Stack": "bg-violet-500/10 text-violet-300 border-violet-500/20",
+  "Backend":    "bg-blue-500/10 text-blue-300 border-blue-500/20",
+  "Real-time":  "bg-emerald-500/10 text-emerald-300 border-emerald-500/20",
+  "AI/Python":  "bg-amber-500/10 text-amber-300 border-amber-500/20",
 };
 
 export function ProjectsSection() {
+  const [active, setActive] = useState<FilterTab>("All");
+  const ref = useReveal<HTMLElement>();
+
+  const filtered = active === "All"
+    ? projects
+    : projects.filter((p) => p.categories.includes(active));
+
   return (
-    <section id="projects" className="scroll-mt-24 py-16 sm:py-20 lg:py-28">
+    <section
+      id="projects"
+      ref={ref}
+      aria-labelledby="projects-heading"
+      className="reveal section-space scroll-mt-24"
+    >
       <Container>
         <SectionHeading
-          eyebrow="Projects"
-          title="Selected production work and a mobile translation project."
-          description="Selected company projects summarized by their scope, stack, and engineering contributions."
+          id="projects-heading"
+          eyebrow={portfolioConfig.sections.projects.eyebrow}
+          title={portfolioConfig.sections.projects.title}
         />
 
-        <div className="mt-7 grid gap-4 sm:mt-10 sm:gap-6 lg:grid-cols-2">
-          {projects.map((project, index) => (
-            <motion.article
-              key={project.title}
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ delay: index * 0.08 }}
-              className="group"
+        {/* Filter tabs */}
+        <div
+          role="tablist"
+          aria-label="Filter projects by category"
+          className="mt-6 flex flex-wrap gap-2"
+        >
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              role="tab"
+              aria-selected={active === tab}
+              onClick={() => setActive(tab)}
+              className={[
+                "filter-tab rounded-full border px-4 py-1.5 text-xs font-semibold font-mono transition-all duration-200",
+                active === tab
+                  ? "border-accent/30 bg-accent/10 text-accent"
+                  : "border-white/10 bg-slate-950/50 text-slate-300 hover:border-white/20 hover:text-white",
+              ].join(" ")}
             >
-              <Card className="flex h-full flex-col overflow-hidden border-white/10 bg-white/5 p-3 transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/7 sm:p-4">
-                <ProjectPreview
-                  type={project.previewType}
-                  accent={project.accent}
-                />
+              {tab}
+            </button>
+          ))}
+        </div>
 
-                <div className="flex min-w-0 flex-1 flex-col p-2 pt-4 sm:pt-5">
-                  <div className="flex items-center justify-between gap-3">
-                    <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
-                      Case study
+        {/* Projects grid */}
+        <div className="mt-6 grid gap-5 md:grid-cols-2">
+          {filtered.map((project) => (
+            <article key={project.title} className="group h-full">
+              <Card className="project-card flex h-full flex-col border-white/10 bg-white/[0.03] p-5 sm:p-6 hover:bg-white/[0.05]">
+                {/* Category chips */}
+                <div className="mb-3 flex flex-wrap gap-1.5">
+                  {project.categories.map((cat) => (
+                    <span
+                      key={cat}
+                      className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold font-mono ${categoryColors[cat]}`}
+                    >
+                      {cat}
+                    </span>
+                  ))}
+                </div>
+
+                <h3 className="text-lg font-semibold leading-snug text-white">
+                  {project.title}
+                </h3>
+                <p className="mt-2 flex-1 text-sm leading-6 text-slate-300">
+                  {project.summary}
+                </p>
+
+                <dl className="mt-4 grid gap-3">
+                  <div>
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-accent">
+                      {portfolioConfig.projectLabels.role}
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-slate-300">{project.role}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-accent">
+                      {portfolioConfig.projectLabels.challenge}
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-slate-300">{project.challenge}</dd>
+                  </div>
+                </dl>
+
+                {/* Tech tags */}
+                <ul
+                  aria-label={`${project.title} technologies`}
+                  className="mt-4 flex flex-wrap gap-1.5"
+                >
+                  {project.tech.slice(0, 8).map((item) => (
+                    <li
+                      key={item}
+                      className="rounded-full border border-white/10 bg-slate-950/70 px-2.5 py-1 font-mono text-[11px] text-slate-400"
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Footer row */}
+                <div className="mt-4 flex items-center justify-between border-t border-white/8 pt-4">
+                  {project.companyProject ? (
+                    <p className="text-[11px] leading-5 text-slate-500 italic">
+                      {portfolioConfig.projectLabels.companyNote}
                     </p>
-                    <span className="h-2.5 w-2.5 rounded-full bg-sky-400 shadow-[0_0_18px_rgba(59,130,246,0.85)]" />
-                  </div>
-                  <h3 className="mt-3 break-words text-xl font-semibold tracking-tight text-white sm:text-2xl">
-                    {project.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-300 sm:leading-7">
-                    {project.description}
-                  </p>
-
-                  <div className="mt-4 flex flex-wrap gap-2 sm:mt-5">
-                    {project.tech.map((item) => (
-                      <span
-                        key={item}
-                        className="rounded-full border border-white/10 bg-slate-950/70 px-3 py-1 text-xs text-slate-200"
+                  ) : (
+                    <span />
+                  )}
+                  <div className="flex gap-2">
+                    {project.githubUrl && project.githubUrl !== "#" && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={`${project.title} on GitHub`}
+                        className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-white transition-colors"
                       >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="mt-4 space-y-2 sm:mt-5">
-                    {project.highlights.map((item) => (
-                      <div
-                        key={item}
-                        className="flex items-start gap-3 text-sm leading-6 text-slate-300"
+                        GitHub
+                        <ExternalLink aria-hidden="true" className="h-3 w-3" />
+                      </a>
+                    )}
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={`${project.title} live demo`}
+                        className="inline-flex items-center gap-1 text-xs text-accent hover:text-accent-light transition-colors"
                       >
-                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-300" />
-                        {item}
-                      </div>
-                    ))}
+                        Live
+                        <ArrowRight aria-hidden="true" className="h-3 w-3" />
+                      </a>
+                    )}
                   </div>
                 </div>
               </Card>
-            </motion.article>
+            </article>
           ))}
         </div>
+
+        {filtered.length === 0 && (
+          <p className="mt-8 text-center text-sm text-slate-500">No projects in this category yet.</p>
+        )}
+
       </Container>
     </section>
   );

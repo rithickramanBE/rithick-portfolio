@@ -1,187 +1,160 @@
-import { motion } from "framer-motion";
-import { ArrowRight, Download } from "lucide-react";
-import { FaGithub, FaLinkedinIn, FaEnvelope } from "react-icons/fa6";
+import { ArrowRight, Download, MapPin } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
-import heroIllustration from "@/assets/hero.png";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/container";
-import { heroStats, socialLinks } from "@/data/portfolio";
+import { ProfileAvatar } from "@/components/profile-avatar";
+import { heroStats, portfolioConfig, socialLinks } from "@/data/portfolio";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
-  visible: (delay: number = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] as const },
-  }),
-};
+// ─── Typing animation hook ─────────────────────────────────
+function useTypingRole(roles: readonly string[] | string[], speed = 75, pause = 2000) {
+  const [displayText, setDisplayText] = useState("");
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [phase, setPhase] = useState<"typing" | "waiting" | "erasing">("typing");
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
+  useEffect(() => {
+    const currentRole = roles[roleIndex % roles.length];
+
+    if (phase === "typing") {
+      if (displayText.length < currentRole.length) {
+        timerRef.current = setTimeout(() => {
+          setDisplayText(currentRole.slice(0, displayText.length + 1));
+        }, speed);
+      } else {
+        timerRef.current = setTimeout(() => setPhase("waiting"), pause);
+      }
+    } else if (phase === "waiting") {
+      timerRef.current = setTimeout(() => setPhase("erasing"), 400);
+    } else if (phase === "erasing") {
+      if (displayText.length > 0) {
+        timerRef.current = setTimeout(() => {
+          setDisplayText((t) => t.slice(0, -1));
+        }, speed / 2);
+      } else {
+        setRoleIndex((i) => i + 1);
+        setPhase("typing");
+      }
+    }
+
+    return () => clearTimeout(timerRef.current);
+  }, [displayText, phase, roleIndex, roles, speed, pause]);
+
+  return displayText;
+}
+
+// ─── Component ─────────────────────────────────────────────
 export function HeroSection() {
+  const typedRole = useTypingRole(portfolioConfig.typingRoles);
+
   return (
     <section
       id="home"
-      className="relative overflow-hidden pt-28 sm:pt-32 lg:min-h-screen lg:pt-28"
+      aria-labelledby="hero-title"
+      className="hero-section relative scroll-mt-24 overflow-hidden pb-16 pt-32 sm:pb-20 sm:pt-36 lg:min-h-[calc(100vh-2rem)] lg:pb-24"
     >
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.2),transparent_28%),radial-gradient(circle_at_top_right,rgba(139,92,246,0.16),transparent_26%),linear-gradient(180deg,rgba(11,15,25,0.65),rgba(11,15,25,1))]" />
+      {/* Animated dot grid */}
+      <div aria-hidden="true" className="dot-grid" />
+
       <Container>
-        <div className="grid items-center gap-10 sm:gap-14 lg:min-h-[calc(100vh-7rem)] lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            className="max-w-3xl space-y-6 sm:space-y-8"
-          >
-            <motion.div
-              variants={fadeUp}
-              custom={0}
-              className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs leading-5 text-slate-200 backdrop-blur-xl sm:px-4 sm:text-sm"
-            >
-              <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(52,211,153,0.8)]" />
-              Software Developer (Full Stack) at Adeptview
-            </motion.div>
+        <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12 xl:gap-16">
+          <div className="max-w-2xl xl:max-w-3xl">
+            {/* Availability badge */}
+            {portfolioConfig.opportunityBadge.enabled ? (
+              <p className="proof-badge mb-6">
+                <span aria-hidden="true" className="proof-dot" />
+                {portfolioConfig.opportunityBadge.label}
+              </p>
+            ) : null}
 
-            <motion.div variants={fadeUp} custom={0.1}>
-              <h1 className="max-w-4xl text-[clamp(2.35rem,9vw,3.5rem)] font-semibold leading-[1.08] tracking-tight text-white sm:text-6xl lg:text-7xl">
-                <span className="bg-gradient-to-r from-white via-sky-100 to-violet-200 bg-clip-text text-transparent">
-                  Rithick Raman
-                </span>
-                <span className="mt-2 block bg-gradient-to-r from-sky-400 via-white to-violet-400 bg-clip-text text-transparent sm:mt-4">
-                  Full Stack Developer
-                </span>
-              </h1>
-            </motion.div>
-
-            <motion.p
-              variants={fadeUp}
-              custom={0.2}
-              className="max-w-2xl text-base leading-8 text-slate-300 sm:text-lg"
+            {/* Name + animated role */}
+            <h1
+              id="hero-title"
+              className="text-[clamp(2.75rem,8vw,5rem)] font-semibold leading-[1.05] tracking-tight text-white"
             >
-              Building full-stack applications with React, TypeScript, Node.js,
-              and PostgreSQL.
-            </motion.p>
+              {portfolioConfig.name}
+            </h1>
 
-            <motion.p
-              variants={fadeUp}
-              custom={0.3}
-              className="max-w-2xl text-sm leading-7 text-slate-400 sm:text-base"
+            <div
+              aria-live="polite"
+              aria-atomic="true"
+              className="mt-3 h-9 text-[clamp(1.1rem,3vw,1.6rem)] font-medium"
             >
-              3+ years of experience across API design, secure access control,
-              real-time systems, and AI-assisted document automation.
-            </motion.p>
+              <span className="text-gradient">{typedRole}</span>
+              <span aria-hidden="true" className="typing-cursor" />
+            </div>
 
-            <motion.div
-              variants={fadeUp}
-              custom={0.4}
-              className="flex flex-col gap-3 sm:flex-row sm:gap-4"
-            >
+            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
+              {portfolioConfig.tagline}
+            </p>
+            <p className="mt-2 max-w-2xl text-sm leading-7 text-slate-400">
+              {portfolioConfig.introduction}
+            </p>
+
+            {/* Location */}
+            <p className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-slate-400">
+              <span className="inline-flex items-center gap-1.5">
+                <MapPin aria-hidden="true" className="h-4 w-4 text-accent" />
+                {portfolioConfig.location}
+              </span>
+              <span aria-hidden="true" className="text-slate-600">·</span>
+              <span>{portfolioConfig.workPreference}</span>
+            </p>
+
+            {/* CTAs */}
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild variant="glow" size="lg">
                 <a href="#projects">
-                  View Projects
-                  <ArrowRight className="h-4 w-4" />
+                  View my work
+                  <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <a href="/Rithick-Raman-Resume.pdf" download>
-                  Download Resume
-                  <Download className="h-4 w-4" />
+                <a
+                  href={`${import.meta.env.BASE_URL}${portfolioConfig.resumePath}`}
+                  download
+                >
+                  Download resume
+                  <Download aria-hidden="true" className="h-4 w-4" />
                 </a>
               </Button>
-            </motion.div>
+            </div>
 
-            <motion.div
-              variants={fadeUp}
-              custom={0.5}
-              className="flex flex-wrap items-center gap-3"
-            >
-              {socialLinks.map(({ label, href, icon: Icon }) => (
+            {/* Social links */}
+            <div className="mt-6 flex items-center gap-3">
+              {socialLinks.map(({ href, label, icon: Icon }) => (
                 <a
                   key={label}
                   href={href}
+                  target={href.startsWith("mailto") ? undefined : "_blank"}
+                  rel={href.startsWith("mailto") ? undefined : "noreferrer"}
                   aria-label={label}
-                  target={href.startsWith("http") ? "_blank" : undefined}
-                  rel={href.startsWith("http") ? "noreferrer" : undefined}
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-slate-300 transition duration-300 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/10 hover:text-white"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-slate-300 transition-all hover:border-accent/30 hover:bg-accent/8 hover:text-accent"
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon aria-hidden="true" className="h-4 w-4" />
                 </a>
               ))}
-            </motion.div>
+              <span className="ml-1 text-xs text-slate-600">/{portfolioConfig.name.split(" ")[0].toLowerCase()}</span>
+            </div>
 
-            <motion.div
-              variants={fadeUp}
-              custom={0.6}
-              className="grid grid-cols-3 gap-2 sm:gap-3"
-            >
-              {heroStats.map((item) => (
+            {/* Proof stats */}
+            <dl className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {heroStats.map((stat) => (
                 <div
-                  key={item.label}
-                  className="min-w-0 rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-xl sm:rounded-3xl sm:p-4"
+                  key={stat.label}
+                  className="rounded-xl border border-white/8 bg-white/[0.03] p-4 hover:border-accent/20 transition-colors"
                 >
-                  <p className="text-xl font-semibold text-white sm:text-2xl">
-                    {item.value}
-                  </p>
-                  <p className="mt-1 text-xs leading-5 text-slate-400 sm:mt-2 sm:text-sm">
-                    {item.label}
-                  </p>
+                  <dt className="text-xs leading-5 text-slate-400">{stat.label}</dt>
+                  <dd className="mt-1.5 text-2xl font-bold tracking-tight text-gradient">
+                    {stat.value}
+                  </dd>
                 </div>
               ))}
-            </motion.div>
-          </motion.div>
-
-          <div className="relative mx-auto w-full max-w-xl">
-            <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-sky-500/10 via-transparent to-violet-500/10 blur-3xl" />
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 p-5 backdrop-blur-2xl">
-              <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.04),transparent_30%,transparent_70%,rgba(255,255,255,0.03))]" />
-              <div className="relative grid gap-4">
-                <div className="rounded-[1.5rem] border border-white/10 bg-slate-950/50 px-4 py-3 sm:px-5">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.35em] text-slate-400 sm:text-xs">
-                    Portfolio workspace
-                  </p>
-                  <p className="mt-2 text-sm font-medium text-white sm:text-lg">
-                    React, TypeScript, Node.js, and PostgreSQL
-                  </p>
-                </div>
-
-                <div className="grid gap-3 sm:gap-4">
-                  <div className="min-w-0 rounded-[1.75rem] border border-white/10 bg-slate-950/70 p-4 sm:p-5">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-500 to-violet-500 text-base font-semibold text-white sm:h-14 sm:w-14 sm:text-xl">
-                        RR
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-sm font-semibold text-white sm:text-base">
-                          Rithick Raman
-                        </p>
-                        <p className="text-sm text-slate-400">
-                          Full Stack Developer
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="mt-5 space-y-3 text-sm text-slate-300">
-                      <div className="flex items-center gap-2">
-                        <FaGithub className="h-4 w-4 shrink-0 text-slate-400" />
-                        <span className="min-w-0 break-all text-slate-200">
-                          github.com/rithickramanBE
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <FaLinkedinIn className="h-4 w-4 shrink-0 text-slate-400" />
-                        <span className="leading-6 text-slate-200">
-                          Full-stack product development
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <FaEnvelope className="h-4 w-4 shrink-0 text-slate-400" />
-                        <span className="text-slate-200">
-                          React · Node.js · PostgreSQL
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </dl>
           </div>
+
+          {/* Enhanced Profile Avatar with Skeleton Loading */}
+          <ProfileAvatar />
         </div>
       </Container>
     </section>

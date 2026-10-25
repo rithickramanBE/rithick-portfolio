@@ -1,11 +1,9 @@
-import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { navItems } from "@/data/portfolio";
-import { cn } from "@/utils/cn";
-import { Button } from "@/components/ui/button";
 import { Container } from "@/components/container";
+import { navItems, portfolioConfig } from "@/data/portfolio";
+import { cn } from "@/utils/cn";
 
 type NavbarProps = {
   activeSection: string;
@@ -49,39 +47,43 @@ export function Navbar({ activeSection }: NavbarProps) {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <Container className="py-4">
+      <Container className="py-3">
         <div
           className={cn(
-            "flex items-center justify-between rounded-full border px-3 py-2.5 backdrop-blur-2xl transition-all duration-300 sm:px-4 sm:py-3 lg:px-6",
+            "flex items-center justify-between gap-3 rounded-full border px-3 py-2 backdrop-blur-2xl transition-colors sm:px-4",
             isScrolled
-              ? "border-white/10 bg-slate-950/85 shadow-soft"
-              : "border-white/5 bg-slate-950/55",
+              ? "border-white/15 bg-slate-950/95 shadow-soft"
+              : "border-white/10 bg-slate-950/85",
           )}
         >
-          <a href="#home" className="group flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-sky-500 to-violet-500 text-sm font-semibold text-white shadow-glow transition-transform duration-300 group-hover:scale-105">
+          <a
+            href="#home"
+            aria-label={portfolioConfig.name}
+            className="group flex min-h-11 shrink-0 items-center gap-3 rounded-full"
+          >
+            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-accent to-emerald-700 text-sm font-semibold text-slate-950">
               RR
-            </div>
-            <div className="hidden sm:block">
-              <p className="text-sm font-semibold text-white">Rithick Raman</p>
-              <p className="text-xs text-slate-400">Full Stack Developer</p>
-            </div>
+            </span>
+            <span className="hidden text-sm font-semibold text-white sm:inline">
+              {portfolioConfig.name}
+            </span>
           </a>
 
-          <nav className="hidden items-center gap-1 rounded-full border border-white/8 bg-white/5 p-1 xl:flex">
+          <nav
+            aria-label="Main navigation"
+            className="hidden items-center gap-1 xl:flex"
+          >
             {navItems.map((item) => {
-              const isActive = activeSection === item.href.replace("#", "");
+              const isActive = activeSection === item.href.slice(1);
 
               return (
                 <a
                   key={item.href}
                   href={item.href}
-                  aria-current={isActive ? "page" : undefined}
+                  aria-current={isActive ? "location" : undefined}
                   className={cn(
-                    "rounded-full px-4 py-2 text-sm transition-all duration-300 hover:text-white",
-                    isActive
-                      ? "bg-white text-slate-950 shadow-soft"
-                      : "text-slate-300 hover:bg-white/6",
+                    "inline-flex min-h-11 items-center rounded-full px-3 text-sm transition-colors hover:bg-white/10 hover:text-white",
+                    isActive ? "bg-white/10 text-white" : "text-slate-200",
                   )}
                 >
                   {item.label}
@@ -90,77 +92,59 @@ export function Navbar({ activeSection }: NavbarProps) {
             })}
           </nav>
 
-          <div className="flex items-center gap-3">
-            <Button
-              asChild
-              variant="outline"
-              size="sm"
-              className="hidden xl:inline-flex"
-            >
-              <a href="#contact">Let&apos;s talk</a>
-            </Button>
-            <button
-              type="button"
-              aria-label={
-                isOpen ? "Close navigation menu" : "Open navigation menu"
-              }
-              aria-expanded={isOpen}
-              aria-controls={isOpen ? "mobile-navigation" : undefined}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-white/20 hover:bg-white/10 xl:hidden"
-              onClick={() => setIsOpen((value) => !value)}
-            >
-              {isOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-            </button>
-          </div>
+          <button
+            type="button"
+            aria-label={
+              isOpen ? "Close navigation menu" : "Open navigation menu"
+            }
+            aria-expanded={isOpen}
+            aria-controls={isOpen ? "mobile-navigation" : undefined}
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition-colors hover:bg-white/10 xl:hidden"
+            onClick={() => setIsOpen((value) => !value)}
+          >
+            {isOpen ? (
+              <X aria-hidden="true" className="h-5 w-5" />
+            ) : (
+              <Menu aria-hidden="true" className="h-5 w-5" />
+            )}
+          </button>
         </div>
       </Container>
 
-      <AnimatePresence>
-        {isOpen ? (
-          <motion.div
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.22 }}
-            className="xl:hidden"
-          >
-            <Container>
-              <nav
-                aria-label="Mobile navigation"
-                id="mobile-navigation"
-                className="mt-2 overflow-hidden rounded-3xl border border-white/10 bg-slate-950/95 p-4 shadow-soft backdrop-blur-2xl"
-              >
-                <div className="grid gap-2">
-                  {navItems.map((item) => {
-                    const isActive =
-                      activeSection === item.href.replace("#", "");
+      {isOpen ? (
+        <div className="xl:hidden">
+          <Container>
+            <nav
+              aria-label="Mobile navigation"
+              id="mobile-navigation"
+              className="mt-1 rounded-3xl border border-white/15 bg-slate-950 p-4 shadow-soft"
+            >
+              <div className="grid gap-1">
+                {navItems.map((item) => {
+                  const isActive = activeSection === item.href.slice(1);
 
-                    return (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        onClick={() => setIsOpen(false)}
-                        className={cn(
-                          "rounded-2xl px-4 py-3 text-sm transition-all duration-300",
-                          isActive
-                            ? "bg-white text-slate-950"
-                            : "bg-white/5 text-slate-200 hover:bg-white/10",
-                        )}
-                      >
-                        {item.label}
-                      </a>
-                    );
-                  })}
+                  return (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      aria-current={isActive ? "location" : undefined}
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "inline-flex min-h-11 items-center rounded-2xl px-4 text-sm transition-colors",
+                        isActive
+                          ? "bg-white/10 text-white"
+                          : "text-slate-200 hover:bg-white/10",
+                      )}
+                    >
+                      {item.label}
+                    </a>
+                  );
+                })}
               </div>
-              </nav>
-            </Container>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+            </nav>
+          </Container>
+        </div>
+      ) : null}
     </header>
   );
 }

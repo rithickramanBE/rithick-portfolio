@@ -3,15 +3,17 @@ import type { ReactNode } from "react";
 import { cn } from "@/utils/cn";
 
 type SectionHeadingProps = {
+  id?: string;
   eyebrow: string;
   title: string;
-  description: string;
+  description?: string;
   align?: "left" | "center";
   className?: string;
   children?: ReactNode;
 };
 
 export function SectionHeading({
+  id,
   eyebrow,
   title,
   description,
@@ -27,15 +29,20 @@ export function SectionHeading({
         className,
       )}
     >
-      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-sky-300/90">
+      <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent">
         {eyebrow}
       </p>
-      <h2 className="text-[clamp(1.75rem,6vw,2.5rem)] font-semibold leading-tight tracking-tight text-white">
+      <h2
+        id={id}
+        className="text-[clamp(1.75rem,6vw,2.5rem)] font-semibold leading-tight tracking-tight text-white"
+      >
         {title}
       </h2>
-      <p className="mt-3 text-sm leading-7 text-slate-300 sm:mt-4 sm:text-base">
-        {description}
-      </p>
+      {description ? (
+        <p className="mt-3 text-sm leading-7 text-slate-200 sm:mt-4 sm:text-base">
+          {description}
+        </p>
+      ) : null}
       {children}
     </div>
   );
